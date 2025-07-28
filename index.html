@@ -1,115 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AMR Tracking System - MVP</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f4f6f9;
-    }
-    h1 {
-      text-align: center;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    canvas {
-      margin-top: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMR Tracking System - Professional Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div class="container">
-    <h1>AMR Tracking System (MVP)</h1>
-    <form id="amr-form">
-      <div class="form-group">
-        <label for="pathogen">Pathogen</label>
-        <input type="text" id="pathogen" required />
-      </div>
-      <div class="form-group">
-        <label for="antibiotic">Antibiotic</label>
-        <input type="text" id="antibiotic" required />
-      </div>
-      <div class="form-group">
-        <label for="resistance">Resistance (%)</label>
-        <input type="number" id="resistance" min="0" max="100" required />
-      </div>
-      <button type="submit">Add Data</button>
-    </form>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <i class="fas fa-shield-virus"></i>
+                    AMR Tracking System
+                </h1>
+                <p class="subtitle">Monitor Antimicrobial Resistance Patterns</p>
+            </div>
+        </header>
 
-    <canvas id="amrChart" width="400" height="200"></canvas>
-  </div>
+        <div class="main-content">
+            <div class="form-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-plus-circle"></i> Add New Data Entry</h2>
+                    </div>
+                    <form id="amr-form" class="form">
+                        <div class="form-group">
+                            <label for="pathogen" class="label">
+                                <i class="fas fa-bacterium"></i>
+                                Pathogen
+                            </label>
+                            <input 
+                                type="text" 
+                                id="pathogen" 
+                                class="input"
+                                placeholder="e.g., E. coli, MRSA, Klebsiella"
+                                required 
+                            />
+                            <div class="error-message" id="pathogen-error"></div>
+                        </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const form = document.getElementById('amr-form');
-    const ctx = document.getElementById('amrChart').getContext('2d');
+                        <div class="form-group">
+                            <label for="antibiotic" class="label">
+                                <i class="fas fa-pills"></i>
+                                Antibiotic
+                            </label>
+                            <input 
+                                type="text" 
+                                id="antibiotic" 
+                                class="input"
+                                placeholder="e.g., Penicillin, Ciprofloxacin, Vancomycin"
+                                required 
+                            />
+                            <div class="error-message" id="antibiotic-error"></div>
+                        </div>
 
-    const data = {
-      labels: [],
-      datasets: [{
-        label: 'Resistance (%)',
-        data: [],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)'
-      }]
-    };
+                        <div class="form-group">
+                            <label for="resistance" class="label">
+                                <i class="fas fa-percentage"></i>
+                                Resistance Percentage
+                            </label>
+                            <input 
+                                type="number" 
+                                id="resistance" 
+                                class="input"
+                                placeholder="0-100"
+                                min="0" 
+                                max="100" 
+                                step="0.1"
+                                required 
+                            />
+                            <div class="error-message" id="resistance-error"></div>
+                        </div>
 
-    const chart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100
-          }
-        }
-      }
-    });
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Add Data Entry
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="clear-data">
+                                <i class="fas fa-trash"></i>
+                                Clear All Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const pathogen = document.getElementById('pathogen').value;
-      const antibiotic = document.getElementById('antibiotic').value;
-      const resistance = parseFloat(document.getElementById('resistance').value);
+            <div class="chart-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Resistance Data Visualization</h2>
+                        <div class="chart-controls">
+                            <button class="btn btn-outline" id="export-data">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="amrChart"></canvas>
+                    </div>
+                    <div class="data-summary" id="data-summary">
+                        <p class="summary-text">No data entries yet. Add your first entry above to see the visualization.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      const label = `${pathogen} / ${antibiotic}`;
-      data.labels.push(label);
-      data.datasets[0].data.push(resistance);
-      chart.update();
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Data added successfully!</span>
+    </div>
 
-      form.reset();
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
